@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+<?php include CURR_VIEW_PATH . "head.html"; ?>
+<?php if(isset($_SESSION['message'])) { echo '<div class="alert alert-warning">'.$_SESSION['message'].'</div>'; unset($_SESSION['message']); }?>
+
+
+<div class="container">
+<div class="card">
+    <div class="card-header">
+        <a href="?a=add&c=Product&p=bo" class="btn btn-primary"> Add New Product</a>
+        </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($products as $product) { ?>
+            <tr>
+                <th scope="row"><?php echo $product["id"] ?></th>
+                <td><?php echo $product["name"] ?></td>
+                <td><?php echo $product["description"] ?></td>
+                <td><?php echo $product["price"] ?></td>
+                <td><a href="?a=edit&c=Product&p=bo&product_id=<?php echo $product['id'] ?>"class="btn btn-primary" >Edit</a> <a href="/minette?a=delete&c=Product&p=bo&product_id=<?php echo $product['id'] ?>" class="btn btn-danger btn-small">Delete</a> </td>
+            </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
