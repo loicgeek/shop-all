@@ -58,6 +58,14 @@ class IndexController extends Controller {
 
 
     public function draftAction(){
+        $trash=array();
+        if(!empty($_SESSION['user'])) {
+            $trashModel = new TrashModel();
+            $trash = $trashModel->getTrashByUserId($_SESSION['user']['id']);
+            if($trash && $trash[0]==false){
+                unset($trash[0]);
+            }
+        }
 
         include CURR_VIEW_PATH . "draft.html";
 
@@ -70,6 +78,9 @@ class IndexController extends Controller {
                 if(!$trashModel->exists($_SESSION['user']['id'],$params['product_id'])){
                     $trashModel->insert(['product_id'=>$params['product_id'],'user_id'=>$_SESSION['user']['id']]);
                 }
+
+                if(isset($params['isTrash']))
+                    $this->redirect('?a=draft');
 
                 $this->redirect('?');
             } else{
@@ -85,7 +96,9 @@ class IndexController extends Controller {
             if(!empty($_SESSION['user'])){
                 $trashModel = new TrashModel();
                 $res =$trashModel->deleteFromTrash($_SESSION['user']['id'],$params['product_id']);
-
+                
+                if(isset($params['isTrash']))
+                    $this->redirect('?a=draft');
                 $this->redirect('?');
 
             }
@@ -95,6 +108,29 @@ class IndexController extends Controller {
     public function logoutAction(){
         unset($_SESSION['user']);
         $this->redirect('?');
+    }
+
+    public function forgotPasswordAction(){
+
+        include CURR_VIEW_PATH . "forgotPassword.html";
+
+    }
+
+    public function resetPasswordAction($params){
+
+        $token = $params['token'];
+        $userModel = new UserModel();
+        $tokenData = $userModel->getToken($token);
+
+        if(!empty($tokenData)) $tokenData= $tokenData[0];
+
+        if($tokenData && !empty($tokenData)){
+            include CURR_VIEW_PATH . "resetPassword.html";
+        }else{
+            $_SESSION['message']="Invalid/expired Token Provided";
+            $this->redirect('?');
+        }
+
     }
 
 

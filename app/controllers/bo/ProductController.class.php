@@ -110,7 +110,6 @@ class ProductController extends Controller {
     public function deleteAction($params) {
         $productModel = new ProductModel();
         if(!empty($params['product_id'])){
-            echo $params['product_id'];
             $productModel->delete(['id'=>$params['product_id']]);
             $_SESSION['message'] = 'Product Deleted';
             $this->redirect('?p=bo',null);

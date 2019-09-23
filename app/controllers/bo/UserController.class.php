@@ -103,9 +103,6 @@ class UserController extends Controller
             echo $e->getMessage();
         }
 
-
-
-
     }
 
     public function logoutAction(){
